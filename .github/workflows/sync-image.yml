@@ -24,6 +24,9 @@ jobs:
           - source: redis:7.4-alpine
             target: docker.cnb.cool/youvigo/base/redis:7.4-alpine
 
+          - source: nacos/nacos-server:v3.1.1-slim
+            target: docker.cnb.cool/youvigo/base/nacos-server:v3.1.1-slim
+
           - source: jalena/sentinel-dashboard:latest
             target: docker.cnb.cool/youvigo/base/sentinel-dashboard:latest
 
