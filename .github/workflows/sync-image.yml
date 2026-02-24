@@ -12,20 +12,23 @@ jobs:
       fail-fast: false # 即使其中一个失败，也继续执行其他的同步任务
       matrix:
         include:
-          # --- 这里配置你需要同步的所有镜像列表 ---
-
-          # 1. 同名制品示例 (Mihomo)
           - source: metacubex/mihomo:latest
             target: docker.cnb.cool/youvigo/base/mihomo:latest
 
-          # 2. 你的其他开发环境/基础镜像示例
           - source: mysql:lts
             target: docker.cnb.cool/youvigo/base/mysql:lts
 
           - source: nginx:stable-alpine-perl
             target: docker.cnb.cool/youvigo/base/nginx:stable-alpine-perl
 
-          # 你可以在这里按照上面的格式无限添加...
+          - source: redis:7.4-alpine
+            target: docker.cnb.cool/youvigo/base/redis:7.4-alpine
+
+          - source: jalena/sentinel-dashboard:latest
+            target: docker.cnb.cool/youvigo/base/sentinel-dashboard:latest
+
+          - source: jalena/17-jdk-alpine-cn:latest
+            target: docker.cnb.cool/youvigo/base/17-jdk-alpine-cn:latest
 
     steps:
       - name: Sync Image using Skopeo
