@@ -16,7 +16,7 @@ jobs:
 
           # 1. 同名制品示例 (Mihomo)
           - source: metacubex/mihomo:latest
-            target: docker.cnb.cool/youvigo/mihomo:latest
+            target: docker.cnb.cool/youvigo/base/mihomo:latest
 
           # 2. 你的其他开发环境/基础镜像示例
           - source: mysql:lts
