@@ -1,0 +1,42 @@
+name: Sync Multiple Images to CNB
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # 即使其中一个失败，也继续执行其他的同步任务
+      matrix:
+        include:
+          # --- 这里配置你需要同步的所有镜像列表 ---
+
+          # 1. 同名制品示例 (Mihomo)
+          - source: metacubex/mihomo:latest
+            target: docker.cnb.cool/youvigo/mihomo:latest
+
+          # 2. 你的其他开发环境/基础镜像示例
+          - source: mysql:lts
+            target: docker.cnb.cool/youvigo/base/mysql:lts
+
+          - source: nginx:stable-alpine-perl
+            target: docker.cnb.cool/youvigo/base/nginx:stable-alpine-perl
+
+          # 你可以在这里按照上面的格式无限添加...
+
+    steps:
+      - name: Sync Image using Skopeo
+        run: |
+          echo "🚀 开始同步: ${{ matrix.source }} -> ${{ matrix.target }}"
+
+          # GitHub 官方的 ubuntu-latest 已经预装了 skopeo
+          # 使用 docker:// 前缀告诉 skopeo 这是一个标准的容器镜像仓库
+          skopeo copy --all \
+            --dest-creds="cnb:${{ secrets.CNB_TOKEN }}" \
+            docker://${{ matrix.source }} \
+            docker://${{ matrix.target }}
+
+          echo "✅ 同步完成!"
