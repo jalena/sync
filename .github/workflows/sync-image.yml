@@ -27,12 +27,6 @@ jobs:
           - source: nacos/nacos-server:v3.1.1-slim
             target: docker.cnb.cool/youvigo/base/nacos-server:v3.1.1-slim
 
-          - source: jalena/sentinel-dashboard:latest
-            target: docker.cnb.cool/youvigo/base/sentinel-dashboard:latest
-
-          - source: jalena/17-jdk-alpine-cn:latest
-            target: docker.cnb.cool/youvigo/base/17-jdk-alpine-cn:latest
-
     steps:
       - name: Sync Image using Skopeo
         run: |
