@@ -1,42 +1,79 @@
-name: Sync Multiple Images to CNB
+name: Mirror Docker Images to CNB
 
 on:
-  schedule:
-    - cron: '0 1 * * *'
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'Select image to mirror (or leave blank to mirror all)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - mysql
+          - nginx
+          - redis
+          - mihomo
+          - nacos-server
+          - odoo
+      version:
+        description: 'Override tag version'
+        required: false
+        type: string
 
 jobs:
-  sync-images:
+  mirror:
+    name: >-
+      Mirror ${{ github.event.inputs.name || 'All Images' }}${{ github.event.inputs.version && format(' (version: {0})', github.event.inputs.version) || '' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false # 即使其中一个失败，也继续执行其他的同步任务
-      matrix:
-        include:
-          - source: metacubex/mihomo:latest
-            target: docker.cnb.cool/youvigo/base/mihomo:latest
-
-          - source: mysql:lts
-            target: docker.cnb.cool/youvigo/base/mysql:lts
-
-          - source: nginx:stable-alpine-perl
-            target: docker.cnb.cool/youvigo/base/nginx:stable-alpine-perl
-
-          - source: redis:7.4-alpine
-            target: docker.cnb.cool/youvigo/base/redis:7.4-alpine
-
-          - source: nacos/nacos-server:v3.1.1-slim
-            target: docker.cnb.cool/youvigo/base/nacos-server:v3.1.1-slim
 
     steps:
-      - name: Sync Image using Skopeo
+      - uses: actions/checkout@v6
+
+      - name: Install tools
         run: |
-          echo "🚀 开始同步: ${{ matrix.source }} -> ${{ matrix.target }}"
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-          # GitHub 官方的 ubuntu-latest 已经预装了 skopeo
-          # 使用 docker:// 前缀告诉 skopeo 这是一个标准的容器镜像仓库
-          skopeo copy --all \
-            --dest-creds="cnb:${{ secrets.CNB_TOKEN }}" \
-            docker://${{ matrix.source }} \
-            docker://${{ matrix.target }}
+      - name: Mirror images
+        env:
+          INPUT_NAME: ${{ github.event.inputs.name }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          TARGET_REGISTRY: docker.cnb.cool/youvigo/base
+        run: |
 
-          echo "✅ 同步完成!"
+          echo "🚀 开始同步任务..."
+
+          images=$(yq -o=json '.images' ${{ github.workspace }}/.github/images.yaml)
+
+          if [ -n "$INPUT_NAME" ]; then
+            matrix=$(echo "$images" | jq -c --arg name "$INPUT_NAME" '.[] | select(.name == $name)')
+          else
+            matrix=$(echo "$images" | jq -c '.[]')
+          fi
+
+          if [ -z "$matrix" ]; then
+            echo "No matching images found for name: $INPUT_NAME"
+            exit 1
+          fi
+
+          echo "$matrix" | while read -r item; do
+            image=$(echo "$item" | jq -r '.image')
+            name=$(echo "$item" | jq -r '.name')
+            default_tag=$(echo "$item" | jq -r '.tag')
+            tag=${INPUT_VERSION:-$default_tag}
+
+            target="$TARGET_REGISTRY/${name}:${tag}"
+
+            echo "----------------------------------------"
+            echo "Mirroring: ${image}:${tag} to ${target}"
+
+            skopeo copy --all docker://docker.io/${image}:${tag} \
+              docker://docker.cnb.cool/lufei/docker/${name}:${tag} \
+              --src-creds "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_TOKEN }}" \
+              --dest-creds "cnb:${{ secrets.CNB_TOKEN }}"
+
+            echo "::notice title=Image Published::${target}"
+
+          done
+
+          echo "Sync done"
