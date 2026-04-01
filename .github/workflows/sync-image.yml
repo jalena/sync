@@ -69,7 +69,6 @@ jobs:
 
             skopeo copy --all docker://docker.io/${image}:${tag} \
               docker://docker.cnb.cool/lufei/docker/${name}:${tag} \
-              --src-creds "${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.DOCKERHUB_TOKEN }}" \
               --dest-creds "cnb:${{ secrets.CNB_TOKEN }}"
 
             echo "::notice title=Image Published::${target}"
