@@ -1,24 +1,24 @@
 images:
-  - image: 'mysql'
-    tag: 'latest'
-    name: 'mysql'
+  - name: mysql
+    image: mysql
+    tag: latest
 
-  - image: 'nginx'
-    tag: 'latest'
-    name: 'nginx'
+  - name: nginx
+    image: nginx
+    tag: latest
 
-  - image: 'redis'
-    tag: 'latest'
-    name: 'redis'
+  - name: redis
+    image: redis
+    tag: latest
 
-  - image: 'metacubex/mihomo'
-    tag: 'latest'
-    name: 'mihomo'
+  - name: mihomo
+    image: metacubex/mihomo
+    tag: latest
 
-  - image: 'nacos/nacos-server'
-    tag: 'v3.1.1-slim'
-    name: 'nacos-server'
+  - name: nacos-server
+    image: nacos/nacos-server
+    tag: v3.1.1-slim
 
-  - image: 'odoo'
-    tag: 'latest'
-    name: 'odoo'
+  - name: odoo
+    image: odoo
+    tag: latest
