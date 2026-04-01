@@ -68,7 +68,7 @@ jobs:
             echo "Mirroring: ${image}:${tag} to ${target}"
 
             skopeo copy --all docker://docker.io/${image}:${tag} \
-              docker://docker.cnb.cool/lufei/docker/${name}:${tag} \
+              docker://${target} \
               --dest-creds "cnb:${{ secrets.CNB_TOKEN }}"
 
             echo "::notice title=Image Published::${target}"
