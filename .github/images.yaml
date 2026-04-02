@@ -26,3 +26,11 @@ images:
   - name: postgres
     image: postgres
     tag: 18
+
+  - name: frpc
+    image: jalena/frpc
+    tag: latest
+
+  - name: frps
+    image: jalena/frps
+    tag: latest
