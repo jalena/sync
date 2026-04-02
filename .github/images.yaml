@@ -22,3 +22,7 @@ images:
   - name: odoo
     image: odoo
     tag: latest
+
+  - name: postgres
+    image: postgres
+    tag: 18
