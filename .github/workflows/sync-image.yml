@@ -15,6 +15,7 @@ on:
           - mihomo
           - nacos-server
           - odoo
+          - postgres
       version:
         description: 'Override tag version'
         required: false
