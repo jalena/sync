@@ -16,6 +16,8 @@ on:
           - nacos-server
           - odoo
           - postgres
+          - frpc
+          - frps
       version:
         description: 'Override tag version'
         required: false
