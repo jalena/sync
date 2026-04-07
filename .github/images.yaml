@@ -17,7 +17,7 @@ images:
 
   - name: nacos-server
     image: nacos/nacos-server
-    tag: v3.1.1-slim
+    tag: v3.2.0-slim
 
   - name: odoo
     image: odoo
