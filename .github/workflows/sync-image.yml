@@ -12,12 +12,9 @@ on:
           - mysql
           - nginx
           - redis
-          - mihomo
           - nacos-server
           - odoo
           - postgres
-          - frpc
-          - frps
       version:
         description: 'Override tag version'
         required: false
