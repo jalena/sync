@@ -5,11 +5,11 @@ images:
 
   - name: nginx
     image: nginx
-    tag: stable-alpine
+    tag: stable-alpine-perl
 
   - name: redis
     image: redis
-    tag: latest
+    tag: 7-alpine
 
   - name: nacos-server
     image: nacos/nacos-server
