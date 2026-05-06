@@ -1,23 +1,19 @@
 images:
   - name: mysql
     image: mysql
-    tag: latest
+    tag: lts
 
   - name: nginx
     image: nginx
-    tag: latest
+    tag: stable-alpine
 
   - name: redis
     image: redis
     tag: latest
 
-  - name: mihomo
-    image: metacubex/mihomo
-    tag: latest
-
   - name: nacos-server
     image: nacos/nacos-server
-    tag: v3.2.0-slim
+    tag: v3.2.1-slim
 
   - name: odoo
     image: odoo
@@ -26,11 +22,3 @@ images:
   - name: postgres
     image: postgres
     tag: 18
-
-  - name: frpc
-    image: jalena/frpc
-    tag: latest
-
-  - name: frps
-    image: jalena/frps
-    tag: latest
