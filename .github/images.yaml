@@ -1,7 +1,7 @@
 images:
   - name: mysql
     image: mysql
-    tag: lts
+    tag: 8
 
   - name: nginx
     image: nginx
