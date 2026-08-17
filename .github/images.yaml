@@ -22,3 +22,7 @@ images:
   - name: postgres
     image: postgres
     tag: 18
+
+  - name: node
+    image: node
+    tag: 20-alpine
