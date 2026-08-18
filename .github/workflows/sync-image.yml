@@ -16,6 +16,7 @@ on:
           - node
           - odoo
           - postgres
+          - certbot
       version:
         description: 'Override tag version'
         required: false
