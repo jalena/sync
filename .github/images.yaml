@@ -30,3 +30,7 @@ images:
   - name: certbot
     image: certbot/certbot
     tag: latest
+
+  - name: acme.sh
+    image: neilpang/acme.sh
+    tag: latest
