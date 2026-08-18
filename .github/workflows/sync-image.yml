@@ -17,6 +17,7 @@ on:
           - odoo
           - postgres
           - certbot
+          - acme.sh
       version:
         description: 'Override tag version'
         required: false
