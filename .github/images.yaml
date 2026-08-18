@@ -26,3 +26,7 @@ images:
   - name: node
     image: node
     tag: 20-alpine
+
+  - name: certbot
+    image: certbot/certbot
+    tag: latest
